@@ -10,6 +10,16 @@ const options = ["1", "8", "16", "32"];
 const validLengths = [32, 64, 128];
 const defaultOption = options[2];
 
+const isWeak = (arr) => {
+  const n = arr.length;
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      if (arr[i] === arr[j]) return true;
+    }
+  }
+  return false;
+};
+
 function App() {
   // let st='dd'/
   const [rounds, setRounds] = useState(defaultOption);
@@ -40,7 +50,7 @@ function App() {
         ans = des128(key, plainText, rounds, flag);
         temp_keys = generate_keys_128(key, rounds);
       }
-      if (temp_keys[0] === temp_keys[1]) {
+      if (isWeak(temp_keys)) {
         setError("Weak Key detected. Kindly enter a Stronger Key!");
       } else setError(null);
       setData(ans);
