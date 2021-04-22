@@ -1,12 +1,16 @@
 * {
   box-sizing: border-box;
 }
+html {
+  scroll-behavior: smooth;
+}
 body {
   background: #003566;
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 }
 button {
   font-family: "Poppins", sans-serif;
@@ -14,7 +18,7 @@ button {
   cursor: pointer;
   background-color: #ffc300;
   padding: 1rem;
-  margin: 0rem 2rem 0rem 0rem;
+  margin: 1rem 2rem;
   border: 3px solid #ffc300;
   outline: none;
   border-radius: 10rem;
@@ -44,18 +48,18 @@ h3 {
 }
 h4 {
   color: white;
-
+  font-size: 1.2rem;
   font-weight: bold;
 }
 p {
   color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 input {
   font-family: "Poppins", sans-serif;
   background-color: #ffc300;
   padding: 1rem;
-  margin: 2rem ;
+  margin: 1rem;
   border: 3px solid #ffc300;
   outline: none;
   border-radius: 10rem;
@@ -70,8 +74,31 @@ input ::placeholder {
 }
 .background {
   width: 80%;
-  height: 100vh;
   margin: auto;
-  border: 1px solid #c3c3c3;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+}
+.row {
+  width: 50%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+.dropdown {
+  width: 20%;
+  margin: 2rem;
+  background-color: chartreuse;
+  cursor: pointer;
+  /* box-sizing: border-box; */
+  max-height: 200px;
+  z-index: 1000;
+}
+
+.answer {
+  color: #00d9c0;
+  font-size: 2rem;
+  margin: 2rem;
 }
