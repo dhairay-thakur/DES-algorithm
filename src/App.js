@@ -33,22 +33,25 @@ function App() {
       if (key.length === 32) {
         ans = des32(key, plainText, rounds, flag);
         temp_keys = generate_keys_32(key, rounds);
-      } else if (key.length == 64) {
+      } else if (key.length === 64) {
         ans = des64(key, plainText, rounds, flag);
         temp_keys = generate_keys_64(key, rounds);
       } else {
         ans = des128(key, plainText, rounds, flag);
         temp_keys = generate_keys_128(key, rounds);
       }
+      if (temp_keys[0] === temp_keys[1]) {
+        setError("Weak Key detected. Kindly enter a Stronger Key!");
+      } else setError(null);
       setData(ans);
       setGeneratedKeys(temp_keys);
-      setError(null);
       setEncrypt(flag);
-      window.scroll(0, 350);
+      window.scroll(0, 500);
     }
   };
   return (
     <div className={styles.background}>
+      <h1 className={styles.heading}>DES Algorithm</h1>
       <input placeholder="Key" onChange={(e) => setKey(e.target.value)} />
       <input
         placeholder="Plain Text"
@@ -70,7 +73,10 @@ function App() {
         <button onClick={() => handleClick(false)}>Decrypt</button>
       </div>
       {data !== "" && (
-        <h4 className={styles.answer}>
+        <h4
+          className={styles.answer}
+          style={{ fontSize: key.length === 128 ? 18 : 24 }}
+        >
           {encrypt ? "Encrypted" : "Decrypted "} Data = {data}
         </h4>
       )}

@@ -5,34 +5,34 @@ html {
   scroll-behavior: smooth;
 }
 body {
-  background: #003566;
-  font-family: "Poppins", sans-serif;
+  background: #2b303a;
+  font-family: "Heebo", sans-serif;
   overflow-x: hidden;
   align-items: center;
   justify-content: center;
   padding: 1rem;
 }
 button {
-  font-family: "Poppins", sans-serif;
+  font-family: "Heebo", sans-serif;
   font-weight: 600;
   cursor: pointer;
-  background-color: #ffc300;
+  background-color: #d64933;
   padding: 1rem;
   margin: 1rem 2rem;
-  border: 3px solid #ffc300;
+  border: 3px solid #d64933;
   outline: none;
-  border-radius: 10rem;
-  color: #003566;
+  border-radius: 5rem;
+  color: #2b303a;
   font-size: 1.2rem;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
 }
 button:hover {
-  background-color: #00d9c0;
+  background-color: #fffecb;
   border-radius: 10rem;
 }
 button:active {
-  background-color: #00d9c0;
+  background-color: #fffecb;
   border-radius: 10rem;
 }
 h1 {
@@ -48,7 +48,7 @@ h3 {
 }
 h4 {
   color: white;
-  font-size: 1.2rem;
+
   font-weight: bold;
 }
 p {
@@ -56,11 +56,11 @@ p {
   font-size: 1rem;
 }
 input {
-  font-family: "Poppins", sans-serif;
-  background-color: #ffc300;
+  font-family: "Heebo", sans-serif;
+  background-color: #d64933;
   padding: 1rem;
   margin: 1rem;
-  border: 3px solid #ffc300;
+  border: 3px solid #d64933;
   outline: none;
   border-radius: 10rem;
   background: transparent;
@@ -90,15 +90,19 @@ input ::placeholder {
 .dropdown {
   width: 20%;
   margin: 2rem;
-  background-color: chartreuse;
+  background-color: #fffecb;
   cursor: pointer;
   /* box-sizing: border-box; */
   max-height: 200px;
   z-index: 1000;
 }
 
+.heading {
+  color: #fffecb;
+}
 .answer {
-  color: #00d9c0;
-  font-size: 2rem;
+  border: 1px solid #d64933;
+  padding: 1rem;
+  color: #fffecb;
   margin: 2rem;
 }
