@@ -63,9 +63,9 @@ const Xor = (a, b) => {
   }
   return result;
 };
-// Function to generate the 16 keys.
+// Function to generate the keys.
 export const generate_keys_128 = (key, rounds) => {
-  // The PC1 table
+  // PC1 table
   const pc1 = [
     42,
     36,
@@ -180,7 +180,7 @@ export const generate_keys_128 = (key, rounds) => {
     110,
     59,
   ];
-  // The PC2 table
+  // PC2 table
   const pc2 = [
     42,
     100,
@@ -289,10 +289,13 @@ export const generate_keys_128 = (key, rounds) => {
   let left = perm_key.substr(0, 56);
   let right = perm_key.substr(56, 56);
   for (let i = 0; i < rounds; i++) {
+    // 3.1 For odd rounds, key_chunks are shifted by one.
     if (i % 2) {
       left = shift_left_once(left);
       right = shift_left_once(right);
-    } else {
+    }
+    // 3.2 For even rounds, key_chunks are shifted by two 
+    else {
       left = shift_left_twice(left);
       right = shift_left_twice(right);
     }
@@ -300,7 +303,8 @@ export const generate_keys_128 = (key, rounds) => {
     // Combining the two chunks
     let combined_key = left + right;
     let round_key = "";
-    // Finally, using the PC2 table to transpose the key bits
+
+    // Transposing the key bits using the PC2 table
     for (let i = 0; i < 96; i++) {
       round_key += combined_key[pc2[i] - 1];
     }
@@ -540,8 +544,7 @@ const desHelper = (pt, keys, rounds) => {
     64,
     1,
   ];
-  // The substitution boxes. The should contain values
-  // from 0 to 15 in any order.
+  // The substitution boxes
   const substition_boxes = [
     [
       [14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7],
@@ -798,20 +801,20 @@ const desHelper = (pt, keys, rounds) => {
   // 2. Dividing the result into two equal halves
   let left = perm.substr(0, 64);
   let right = perm.substr(64, 64);
+  // The plain text is encrypted for required number of rounds
   for (let i = 0; i < rounds; i++) {
     let right_expanded = "";
-    // 3.1. The right half of the plain text is expanded
+    // 3.1 The right half of the plain text is expanded
     for (let i = 0; i < 96; i++) {
       right_expanded += right[expansion_table[i] - 1];
     }
-    // 3.3. The result is xored with a key
+    // 3.2 The result is xored with a key
     let xored = Xor(keys[i], right_expanded);
     let res = "";
-    // 3.4. The result is divided into 8 equal parts and passed
-    // through 8 substitution boxes. After passing through a
-    // substituion box, each box is reduces from 6 to 4 bits.
+    // 3.3 The result is divided into 16 equal parts and passed
+    // through 16 substitution boxes. After passing through a
+    // substituion box, each box is reduced from 6 to 4 bits.
     for (let i = 0; i < 16; i++) {
-      // Finding row and column indices to lookup the substituition box
       let row1 = xored.substr(i * 6, 1) + xored.substr(i * 6 + 5, 1);
       let row = convertBinaryToDecimal(row1);
       let col1 = xored.substr(i * 6 + 1, 4);
@@ -819,14 +822,15 @@ const desHelper = (pt, keys, rounds) => {
       let val = substition_boxes[i % 8][row][col];
       res += convertDecimalToBinary(val);
     }
-    // 3.5. Another permutation is applied
+    // 3.4 Another permutation is applied
     let perm2 = "";
     for (let i = 0; i < 64; i++) {
       perm2 += res[permutation_tab[i] - 1];
     }
-    // 3.6. The result is xored with the left half
+    // 3.5 The result is xored with the left half
     xored = Xor(perm2, left);
-    // 3.7. The left and the right parts of the plain text are swapped
+
+    // 3.6 The left and the right parts of the plain text are swapped
     left = xored;
     if (i < rounds - 1) {
       let temp = right;
@@ -834,7 +838,8 @@ const desHelper = (pt, keys, rounds) => {
       left = temp;
     }
   }
-  // 4. The halves of the plain text are applied
+
+  // 4. The halves of the plain text are combined
   let combined_text = left + right;
   let ciphertext = "";
   // The inverse of the initial permutaion is applied
@@ -845,8 +850,9 @@ const desHelper = (pt, keys, rounds) => {
   return ciphertext;
 };
 export const des128 = (key, pt, rounds, encrypt) => {
-  // Calling the function to generate 16 keys
+  // Calling the function to generate keys
   const keys = generate_keys_128(key, rounds);
+  // if decryption is desired, reverse the order of keys 
   if (!encrypt) keys.reverse();
   let ct = desHelper(pt, keys, rounds);
   return ct;
