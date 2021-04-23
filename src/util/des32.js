@@ -269,44 +269,44 @@ const desHelper = (pt, keys, rounds) => {
   ];
   // The inverse permutation table
   const inverse_permutation = [
-    8,
-    7,
-    10,
-    20,
-    18,
+    30,
+    5,
     32,
-    11,
+    2,
+    4,
+    26,
+    15,
+    17,
+    21,
+    1,
+    29,
     13,
+    6,
+    19,
+    8,
+    31,
+    10,
+    11,
+    9,
     14,
     27,
-    12,
-    19,
     28,
-    4,
-    29,
-    3,
-    21,
+    7,
+    20,
     25,
-    9,
+    18,
     23,
-    15,
-    24,
-    6,
-    30,
-    31,
-    2,
-    17,
+    12,
     16,
+    24,
+    3,
     22,
-    26,
-    1,
-    5,
   ];
   // 1. Applying the initial permutation
-  let perm = pt;
-  //   for (let i = 0; i < 32; i++) {
-  //     perm += pt[initial_permutation[i] - 1];
-  //   }
+  let perm = "";
+  for (let i = 0; i < 32; i++) {
+    perm += pt[initial_permutation[i] - 1];
+  }
   // 2. Dividing the result into two equal halves
   let left = perm.substr(0, 16);
   let right = perm.substr(16, 16);
@@ -350,12 +350,13 @@ const desHelper = (pt, keys, rounds) => {
   }
   // 4. The halves of the plain text are applied
   let combined_text = left + right;
+  let ciphertext = "";
   // The inverse of the initial permutaion is applied
-  //   for (let i = 0; i < 64; i++) {
-  //     ciphertext += combined_text[inverse_permutation[i] - 1];
-  //   }
+  for (let i = 0; i < 32; i++) {
+    ciphertext += combined_text[inverse_permutation[i] - 1];
+  }
   // And we finally get the cipher text
-  return combined_text;
+  return ciphertext;
 };
 export const des32 = (key, pt, rounds, encrypt) => {
   // Calling the function to generate 16 keys

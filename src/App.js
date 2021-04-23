@@ -14,7 +14,9 @@ const isWeak = (arr) => {
   const n = arr.length;
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
-      if (arr[i] === arr[j]) return true;
+      if (arr[i] === arr[j]) {
+        return true;
+      }
     }
   }
   return false;
@@ -50,9 +52,11 @@ function App() {
         ans = des128(key, plainText, rounds, flag);
         temp_keys = generate_keys_128(key, rounds);
       }
-      if (isWeak(temp_keys)) {
+      if (isWeak(temp_keys) && key.length != 32) {
         setError("Weak Key detected. Kindly enter a Stronger Key!");
-      } else setError(null);
+      } else {
+        setError(null);
+      }
       setData(ans);
       setGeneratedKeys(temp_keys);
       setEncrypt(flag);
