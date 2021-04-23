@@ -10,20 +10,23 @@ const options = ["1", "8", "16", "32"];
 const validLengths = [32, 64, 128];
 const defaultOption = options[2];
 
-const isWeak = (arr) => {
-  const n = arr.length;
-  for (let i = 0; i < n; i++) {
-    for (let j = i + 1; j < n; j++) {
-      if (arr[i] === arr[j]) {
-        return true;
-      }
-    }
+// Function to check if weak key is supplied
+const isWeak = (inputKey) => {
+  let key = "";
+  for (let i = 0; i < inputKey.length; i++) {
+    if (i % 8 !== 7) key += inputKey[i];
   }
-  return false;
+  const n = key.length;
+  // weak key can be of the type 0000 or 1111 or 0011 or 1100
+  console.log(key);
+  for (let i = 1; i < n; i++) {
+    if (key[i] !== key[i - 1]) return false;
+  }
+  return true;
 };
 
 function App() {
-  // let st='dd'/
+  // state variables
   const [rounds, setRounds] = useState(defaultOption);
   const [key, setKey] = useState("");
   const [plainText, setPlainText] = useState("");
@@ -32,6 +35,7 @@ function App() {
   const [error, setError] = useState(null);
   const [encrypt, setEncrypt] = useState(true);
 
+  // Function to handle Encryption and report Error
   const handleClick = (flag) => {
     if (!validLengths.includes(key.length)) {
       setError("Key must be of 32 / 64 / 128 bits only!");
@@ -43,16 +47,19 @@ function App() {
       let ans = "",
         temp_keys = [];
       if (key.length === 32) {
+        // 32 bit case
         ans = des32(key, plainText, rounds, flag);
         temp_keys = generate_keys_32(key, rounds);
       } else if (key.length === 64) {
+        // 64 bit case
         ans = des64(key, plainText, rounds, flag);
         temp_keys = generate_keys_64(key, rounds);
       } else {
+        // 128 bit case
         ans = des128(key, plainText, rounds, flag);
         temp_keys = generate_keys_128(key, rounds);
       }
-      if (isWeak(temp_keys) && key.length != 32) {
+      if (isWeak(key)) {
         setError("Weak Key detected. Kindly enter a Stronger Key!");
       } else {
         setError(null);
